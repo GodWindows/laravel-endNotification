@@ -1,12 +1,18 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 darke:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
-            <div>
-                <a href="{{ route('new_project') }}">
-                    <x-primary-button class="mt-4">{{ __("Créer un projet") }}</x-primary-button>
-                </a>
+            <div class="mb-5 md:mb-0">
+                {{ __('Dashboard') }}
             </div>
+            <a href="{{ route('view.admins.edit') }}">
+                <div class="md:float-right hover:bg-slate-200 rounded-md border py-3 md:p-3 cursor-pointer" id="myBtn">
+                Modifier les admins
+                </div>
+            </a>
+            <br>
+            <a href="{{route('new_project')}}">
+                <x-primary-button class="mt-4">{{ __("Créer un projet") }}</x-primary-button>
+            </a>
         </h2>
     </x-slot>
 
@@ -20,16 +26,18 @@
                     </div>
                     <div class="flex flex-wrap -mx-4">
                         @foreach ($projects as $project)
-                        <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 px-4 mb-8 project-card">
-                            <div class="bg-gray-100 rounded-lg shadow-lg p-6">
-                                <h2 class="text-lg font-medium text-gray-900 mb-4">{{$project->name}}</h2>
-                                <p class="text-gray-700">
-                                    <div class="mb-6 h-5 w-full bg-neutral-200 darke:bg-neutral-600">
-                                        <div class="h-5 bg-primary" style="width: {{ progress($project) }}%"> {{ progress($project) }}%</div>
+                            <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 px-4 mb-8 project-card">
+                                <a href="{{route('view.project', $project->id)}}">
+                                    <div class="bg-gray-100 rounded-lg shadow-lg p-6">
+                                        <h2 class="text-lg font-medium text-gray-900 mb-4">{{$project->name}}</h2>
+                                        <p class="text-gray-700">
+                                            <div class="mb-6 h-5 w-full bg-neutral-200 darke:bg-neutral-600">
+                                                <div class="h-5 bg-primary" style="width: {{ progress($project) }}%"> {{ progress($project) }}%</div>
+                                            </div>
+                                        </p>
                                     </div>
-                                </p>
+                                </a>
                             </div>
-                        </div>
                         @endforeach
                     </div>
                 @else
@@ -45,6 +53,7 @@
                 </div>
             </div>
         </div>
+
 
 
         @if (session('success') === 'Project created successfully')

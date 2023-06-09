@@ -78,5 +78,24 @@ if (!function_exists('manageProjects')) {
         });
     }
 }
+if (!function_exists('myConvertDate')) {
+    function myConvertDate($date)
+    {
+        $convertedDate = Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d');
+
+        return $convertedDate;
+    }
+}
+if (!function_exists('reverseConvertDate')) {
+    function reverseConvertDate($date)
+    {
+        $convertedDate = Carbon::createFromFormat('Y-m-d', $date)->format('d/m/Y');
+
+        return $convertedDate;
+    }
+}
+
+
+
 ?>
 
