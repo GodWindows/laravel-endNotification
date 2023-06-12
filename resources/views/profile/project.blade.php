@@ -112,4 +112,4 @@
     </div>
     <link rel="stylesheet" href=" {{ asset('css/modal.css') }} ">
     <script src=" {{ asset('js/modal.js') }} "></script>
-</x-app-layout>
+</x-app-layout> 

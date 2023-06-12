@@ -4,11 +4,13 @@
             <div class="mb-5 md:mb-0">
                 {{ __('Dashboard') }}
             </div>
-            <a href="{{ route('view.admins.edit') }}">
-                <div class="md:float-right hover:bg-slate-200 rounded-md border py-3 md:p-3 cursor-pointer" id="myBtn">
-                Modifier les admins
-                </div>
-            </a>
+            @if ($superAdmin)
+                <a href="{{ route('view.admins.edit') }}">
+                    <div class="md:float-right hover:bg-slate-200 rounded-md border py-3 md:p-3 cursor-pointer" id="myBtn">
+                    Modifier les admins
+                    </div>
+                </a>
+            @endif
             <br>
             <a href="{{route('new_project')}}">
                 <x-primary-button class="mt-4">{{ __("Créer un projet") }}</x-primary-button>

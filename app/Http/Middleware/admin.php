@@ -22,7 +22,7 @@ class admin
         if (in_array($userEmail, $adminEmails)) {
             return $next($request);
         } else {
-            return redirect()->route('home');
+            return redirect()->back();
         }
     }
 }

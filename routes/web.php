@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProjectController;
 use App\Models\Project;
+use App\Models\Admin as ModelsAdmin;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -39,7 +40,11 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     })->name('new_project');
 
     Route::get('/dashboard', function () {
+        $authUserEmail = Auth::user()->email;
+        $superAdminEmails = ModelsAdmin::where('is_super_admin', 1)->pluck('email')->toArray();
+        $superAdmin = in_array($authUserEmail, $superAdminEmails) ;
         $data['projects'] = Auth::user()->projects;
+        $data['superAdmin'] = $superAdmin;
         return view('dashboard', $data);
     })->name('dashboard');
 });

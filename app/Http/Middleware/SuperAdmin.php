@@ -22,7 +22,7 @@ class SuperAdmin
         if (in_array($userEmail, $superAdminEmails)) {
             return $next($request);
         } else {
-            return redirect()->route('home');
+            return redirect()->back();
         }
     }
 }
