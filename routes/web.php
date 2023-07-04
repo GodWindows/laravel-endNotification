@@ -21,7 +21,8 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
-    return redirect('http://www.ecoody.com');
+    // return redirect('http://www.ecoody.com');
+    return view('welcome');
 })->name('home');
 
 Route::get('/tasks/{code}', [ProjectController::class, 'tasks'])->name('tasks');
@@ -31,6 +32,9 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/add-project', [ProjectController::class, 'create'])->name('project.add');
+
+    // Route::post('/test-project', [ProjectController::class, 'test'])->name('project.test');
+
     Route::get('/delete-project/{id}', [ProjectController::class, 'delete'])->name('project.delete');
     Route::post('/update-project', [ProjectController::class, 'update'])->name('project.update');
     Route::get('/project/{id}', [ProjectController::class, 'view'])->name('view.project');

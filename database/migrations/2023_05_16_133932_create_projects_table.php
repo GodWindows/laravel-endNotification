@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            // $table->string('name');
+            $table->date('start_date');
             $table->date('end_date')->nullable();
+            $table->json('reminders_dates')->nullable();
             $table->timestamps();
         });
     }
