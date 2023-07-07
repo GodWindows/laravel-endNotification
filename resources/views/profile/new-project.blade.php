@@ -73,7 +73,7 @@
             }
         </style>
 
-<form method="post" action="{{route('project.create')}}" class="mt-6 space-y-6">
+<form method="post" action="{{route('project.add')}}" class="mt-6 space-y-6">
     @csrf
     <div x-data="app()" x-cloak>
         <div class="max-w-3xl mx-auto px-4 py-10">
