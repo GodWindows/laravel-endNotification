@@ -69,14 +69,14 @@
             }
         </style>
 
-<form method="post" action="{{route('project.add')}}" class="mt-6 space-y-6">
+<form id="myForm" method="post" action="{{route('project.add')}}" class="mt-6 space-y-6">
     @csrf
     <div>
         <div class="max-w-3xl mx-auto px-4 py-2">
             <div>
                 <div class="pb-2">
                     <div class="flex flex-col  space-y-4 mx-auto sm:px-6 lg:px-8 max-w-4xl mt-2 px-6">
-                        <div id="step-1" style="display: none">
+                        <div style="display : none"  id="step-1">
                             <div>
                                 <x-input-label for="name" :value="__('Nom du projet :')"  class="font-bold mb-3 text-gray-700 block"/>
                                 <x-text-input id="name" name="name" type="text" class="w-full px-4 py-3 rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium"
@@ -90,7 +90,7 @@
                                 <x-input-error class="mt-2" :messages="$errors->get('email')" />
                             </div>
                         </div>
-                        <div id="step-2" style="display: none">
+                        <div style="display : none"  id="step-2">
                             <div>
                                 <x-input-label for="start_date" :value="__('Date du début de projet')" class="font-bold mb-1 text-gray-700 block"/>
                                 <x-text-input id="start_date" type="date" name="start_date" :value="old('start_date')" required min="{{ date('Y-m-d') }}" class="w-full mb-10 px-4 py-3 rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium"/>
@@ -100,7 +100,7 @@
                             <div>
                                 <div>
                                     <x-input-label for="time" :value="__('Durée du projet')" class="font-bold mb-1 text-gray-700 block"/>
-                                    <x-text-input id="time" type="number" name="time" :value="old('time')"  required class="w-full px-4 py-3 rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium"/>
+                                    <x-text-input id="time" type="number" name="time" :value="old('time')" min="0" required class="w-full px-4 py-3 rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium"/>
                                     <x-input-error :messages="$errors->get('time')" class="mt-2" />
                                 </div>
 
@@ -108,7 +108,7 @@
                                     <label
                                         class="flex justify-start items-center text-truncate rounded-lg bg-white pl-4 pr-6 py-3 shadow-sm mr-4">
                                         <div class="text-teal-600 mr-3">
-                                            <input type="radio" x-model="dmy" value="day" class="form-radio focus:outline-none focus:shadow-outline" @input="updateFrequencyMax" />
+                                            <input type="radio" required name="dmy" value="day" class="form-radio focus:outline-none focus:shadow-outline" @input="updateFrequencyMax" />
                                         </div>
                                         <div class="select-none text-gray-700">Jours</div>
                                     </label>
@@ -116,7 +116,7 @@
                                     <label
                                         class="flex justify-start items-center text-truncate rounded-lg bg-white pl-4 pr-6 py-3 shadow-sm mr-4">
                                         <div class="text-teal-600 mr-3">
-                                            <input type="radio" x-model="dmy" value="month" class="form-radio focus:outline-none focus:shadow-outline" @input="updateFrequencyMax"/>
+                                            <input type="radio" required name="dmy" value="month" class="form-radio focus:outline-none focus:shadow-outline" @input="updateFrequencyMax"/>
                                         </div>
                                         <div class="select-none text-gray-700">Mois</div>
                                     </label>
@@ -124,25 +124,25 @@
                                     <label
                                         class="flex justify-start items-center text-truncate rounded-lg bg-white pl-4 pr-6 py-3 shadow-sm">
                                         <div class="text-teal-600 mr-3">
-                                            <input type="radio" x-model="dmy" value="year" class="form-radio focus:outline-none focus:shadow-outline" @input="updateFrequencyMax"/>
+                                            <input type="radio" required name="dmy" value="year" class="form-radio focus:outline-none focus:shadow-outline" @input="updateFrequencyMax"/>
                                         </div>
                                         <div class="select-none text-gray-700">Années</div>
                                     </label>
                                 </div>
                             </div>
                         </div>
-                        <div id="step-3" style="display: none">
+                        <div style="display : none"  id="step-3">
                             <div>
                                 <div>
-                                    <x-input-label for="freq_time" :value="__('Frequence de rappel')" class="font-bold mb-1 text-gray-700 block"/>
-                                    <x-text-input id="freq_time" type="number" name="freq_time" :value="old('freq_time')"  required min="0" max=0 class="w-full px-4 py-3 rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium"/>
+                                    <x-input-label for="freq_time" :value="__('Fréquence de rappel')" class="font-bold mb-1 text-gray-700 block"/>
+                                    <x-text-input id="freq_time" type="number" name="freq_time" :value="old('freq_time')"  required min="0" class="w-full px-4 py-3 rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium"/>
                                     <x-input-error :messages="$errors->get('freq_time')" class="mt-2" />
                                 </div>
                                 <div class="flex mt-2">
                                     <label
                                         class="flex justify-start items-center text-truncate rounded-lg bg-white pl-4 pr-6 py-3 shadow-sm mr-4">
                                         <div class="text-teal-600 mr-3">
-                                            <input type="radio" x-model="freq_dmy" value="day" class="form-radio focus:outline-none focus:shadow-outline" @input="updateFrequencyMax"/>
+                                            <input type="radio" required name="freq_dmy" value="day" class="form-radio focus:outline-none focus:shadow-outline" @input="updateFrequencyMax"/>
                                         </div>
                                         <div class="select-none text-gray-700">Jours</div>
                                     </label>
@@ -150,7 +150,7 @@
                                     <label
                                         class="flex justify-start items-center text-truncate rounded-lg bg-white pl-4 pr-6 py-3 shadow-sm mr-4">
                                         <div class="text-teal-600 mr-3">
-                                            <input type="radio" x-model="freq_dmy" value="month" class="form-radio focus:outline-none focus:shadow-outline" @input="updateFrequencyMax"/>
+                                            <input type="radio" required name="freq_dmy" value="month" class="form-radio focus:outline-none focus:shadow-outline" @input="updateFrequencyMax"/>
                                         </div>
                                         <div class="select-none text-gray-700">Mois</div>
                                     </label>
@@ -158,14 +158,14 @@
                                     <label
                                         class="flex justify-start items-center text-truncate rounded-lg bg-white pl-4 pr-6 py-3 shadow-sm">
                                         <div class="text-teal-600 mr-3">
-                                            <input type="radio" x-model="freq_dmy" value="year" class="form-radio focus:outline-none focus:shadow-outline" @input="updateFrequencyMax"/>
+                                            <input type="radio" required name="freq_dmy" value="year" class="form-radio focus:outline-none focus:shadow-outline" @input="updateFrequencyMax"/>
                                         </div>
                                         <div class="select-none text-gray-700">Années</div>
                                     </label>
                                 </div>
                             </div>
                         </div>
-                        <div id="step-4" style="display: none">
+                        <div style="display : none"  id="step-4">
                             <div class="relative mb-3" data-te-input-wrapper-init>
                                 <textarea
                                     class="peer block min-h-[auto] w-full rounded border-0 px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none darke:text-neutral-200 darke:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
@@ -221,6 +221,8 @@
 
 </x-app-layout>
 <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.js" integrity="sha512-Y+cHVeYzi7pamIOGBwYHrynWWTKImI9G78i53+azDb1uPmU1Dz9/r2BLxGXWgOC7FhwAGsy3/9YpNYaoBy7Kzg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.css" integrity="sha512-8D+M+7Y6jVsEa7RD6Kv/Z7EImSpNpQllgaEIQAtqHcI0H6F4iZknRj0Nx1DCdB+TwBaS+702BGWYC0Ze2hpExQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="{{asset('js/new-project.js')}}"></script>
 
 

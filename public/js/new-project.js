@@ -9,6 +9,7 @@ function show_step(num) {
         step = document.getElementById(id)
         if (index==num) {
             step.style.display= 'block'
+            console.log("step "+index+ " showed!");
         } else {
             step.style.display= 'none'
         }
@@ -24,9 +25,14 @@ function previous_() {
 }
 
 function next_() {
-    if (page<4) {
-        page++
-        show_step(page)
+    if (page == 3 ) {
+        check_step3()
+    }
+    if (page == 2 ) {
+        check_step2()
+    }
+    if (page == 1 ) {
+        check_step1()
     }
 }
 
@@ -44,6 +50,58 @@ function handleButtons() {
         previousButton.style.visibility = 'visible'
     }
 }
+
+function check_step1() {
+    if ($("#name")[0].checkValidity() && $("#email")[0].checkValidity()){
+        page++
+        show_step(page)
+    }else{
+        $("#email")[0].reportValidity()
+        $("#name")[0].reportValidity()
+    }
+}
+
+function check_step2() {
+    var genderRadios = document.getElementsByName("dmy");
+    var isdmySelected = Array.from(genderRadios).some(radio => radio.checked);
+    if ($("#time")[0].checkValidity() && $("#start_date")[0].checkValidity()){
+        if(isdmySelected){
+            page++
+            show_step(page)
+        }else{
+            $.toast({
+                heading: 'Attention',
+                text: 'Choisissez entre jours, mois et années',
+                showHideTransition: 'fade',
+                icon: 'warning'
+            })
+        }
+    }else{
+        $("#time")[0].reportValidity()
+        $("#start_date")[0].reportValidity()
+    }
+}
+
+function check_step3() {
+    var genderRadios = document.getElementsByName("freq_dmy");
+    var isfreqDmySelected = Array.from(genderRadios).some(radio => radio.checked);
+    if ($("#freq_time")[0].checkValidity()){
+        if (isfreqDmySelected) {
+            page++
+            show_step(page)
+        }else{
+            $.toast({
+                heading: 'Attention',
+                text: 'Choisissez entre jours, mois et années',
+                showHideTransition: 'fade',
+                icon: 'warning'
+            })
+        }
+    }else{
+        $("#freq_time")[0].reportValidity()
+    }
+}
+
 function app() {
     return {
         step: 1,
