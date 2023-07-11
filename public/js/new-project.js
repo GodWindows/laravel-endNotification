@@ -1,4 +1,5 @@
 var page = 1
+var nbDays = {"day": 1, "month": 30, "year": 365};
 previousButton = document.getElementById("previous")
 nextButton = document.getElementById("next")
 show_step(1)
@@ -62,19 +63,14 @@ function check_step1() {
 }
 
 function check_step2() {
-    var genderRadios = document.getElementsByName("dmy");
-    var isdmySelected = Array.from(genderRadios).some(radio => radio.checked);
+    var radios = document.getElementsByName("dmy");
+    var isdmySelected = Array.from(radios).some(radio => radio.checked);
     if ($("#time")[0].checkValidity() && $("#start_date")[0].checkValidity()){
         if(isdmySelected){
             page++
             show_step(page)
         }else{
-            $.toast({
-                heading: 'Attention',
-                text: 'Choisissez entre jours, mois et années',
-                showHideTransition: 'fade',
-                icon: 'warning'
-            })
+            toast('Choisissez entre jours, mois et années')
         }
     }else{
         $("#time")[0].reportValidity()
@@ -83,23 +79,56 @@ function check_step2() {
 }
 
 function check_step3() {
-    var genderRadios = document.getElementsByName("freq_dmy");
-    var isfreqDmySelected = Array.from(genderRadios).some(radio => radio.checked);
+    var radios = document.getElementsByName("freq_dmy");
+    var isfreqDmySelected = Array.from(radios).some(radio => radio.checked);
     if ($("#freq_time")[0].checkValidity()){
         if (isfreqDmySelected) {
-            page++
-            show_step(page)
+            if (durationIsGreaterThanFrequency()) {
+                page++
+                show_step(page)
+            }else{
+                toast('La fréquence de rappel doit être inférieure ou égale à la durée du projet')
+            }
         }else{
-            $.toast({
-                heading: 'Attention',
-                text: 'Choisissez entre jours, mois et années',
-                showHideTransition: 'fade',
-                icon: 'warning'
-            })
+            toast('Choisissez entre jours, mois et années')
         }
     }else{
         $("#freq_time")[0].reportValidity()
     }
+}
+
+function toast(message) {
+    $.toast({
+        heading: 'Attention',
+        text: message,
+        showHideTransition: 'fade',
+        icon: 'warning'
+    })
+}
+
+function durationIsGreaterThanFrequency() {
+    const freq_dmyGroup = document.getElementsByName('freq_dmy');
+    const dmyGroup = document.getElementsByName('dmy');
+    var duration = $("#time")[0].value
+    var frequency = $("#freq_time")[0].value
+    var dmy = '';
+    var freq_dmy = '';
+
+    for (let i = 0; i < dmyGroup.length; i++) {
+        if (dmyGroup[i].checked) {
+            dmy = dmyGroup[i].value;
+            break;
+        }
+    }
+
+    for (let i = 0; i < freq_dmyGroup.length; i++) {
+        if (freq_dmyGroup[i].checked) {
+            freq_dmy = freq_dmyGroup[i].value;
+            break;
+        }
+    }
+    return duration*nbDays[dmy] > frequency*nbDays[freq_dmy]
+
 }
 
 function app() {
@@ -138,16 +167,4 @@ function app() {
             this.step = step;
         },
     };
-}
-
-function validateStep(step) {
-    const fields = document.querySelectorAll(`[x-ref="${step}"] input[required]`);
-
-    for (let i = 0; i < fields.length; i++) {
-        if (!fields[i].value) {
-        return false;
-        }
-    }
-
-    return true;
 }
