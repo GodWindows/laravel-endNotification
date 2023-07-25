@@ -10,121 +10,38 @@ use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
-    // public function create(Request $request)
-    // {
-    //     $request->validate([
-    //         'name' => ['required', 'string', 'max:50'],
-    //         'email' => ['required', 'email', ],
-    //         'end_date' => ['required', 'date_format:d/m/Y' ],
-    //         'warning_message' => ['required', ],
-    //         'end_message' => ['required'],
-    //     ]);
+     public function create(Request $request)
+     {
+        $nbDays = ["day"=> 1, "month"=> 30, "year"=> 365];
+         $request->validate([
+             'name' => ['required', 'string', 'max:50'],
+             'email' => ['required', 'email', ],
+             'start_date' => ['required',/*  'date_format:d/m/Y'  */],
+             'reminder_message' => ['required', ],
+             'warning_message' => ['required', ],
+             'end_message' => ['required'],
+             'freq_time' => ['required'],
+             'time' => ['required'],
+             'freq_dmy' => ['required'],
+             'dmy' => ['required'],
+         ]);
 
-    //     $project = new Project();
-    //     $project->name = $request->name;
-    //     $project->user_id = Auth::user()->id;
-    //     $project->warning_message = $request->warning_message;
-    //     $project->end_message = $request->end_message;
-    //     $project->email = $request->email;
-    //     $project->end_date = myConvertDate($request->end_date) ;
-    //     $project->save();
+         $project = new Project();
+         $project->name = $request->name;
+         $project->user_id = Auth::user()->id;
+         $project->warning_message = $request->warning_message;
+         $project->end_message = $request->end_message;
+         $project->reminder_message = $request->reminder_message;
+         $project->email = $request->email;
+         $project->start_date = ($request->start_date) ;
+         $project->duration = ($request->time * $nbDays[$request->dmy]);
+         $project->frequency = ($request->freq_time * $nbDays[$request->freq_dmy]);
+         $project->frequency_dmy = $nbDays[$request->freq_dmy];
+         $project->duration_dmy = $nbDays[$request->dmy];
+         $project->save();
 
-    //     return redirect()->route('dashboard')->with('success', 'Project created successfully');
-    // }
-
-
-    public function create(Request $request)
-    {
-
-        $request->validate([
-            'name' => ['required', 'string', 'max:50'],
-            'email' => ['required', 'email', ],
-            'start_date' => ['required'],
-            'time' => ['required'],
-            'dmy' => ['required'],
-            'freq_time' => ['required'],
-            'freq_dmy' => ['required'],
-            'warning_message' => ['required'],
-            'end_message' => ['required'],
-        ]);
-
-        echo(' ');
-        echo($request->time);
-        echo($request->dmy);
-        echo(' ');
-        echo($request->freq_time);
-        echo($request->freq_dmy);
-        // echo($request->date);
-
-        // $pro = new Carbon($request->date);
-
-        $start_date = new Carbon($request->start_date);
-
-        echo(' ');
-
-        echo($start_date)->format('d/m/Y');
-
-        $date = clone $start_date;
-        if($request->dmy == 'day'){
-            $end_date = $date->addDay($request->time);
-        }elseif($request->dmy == 'month'){
-            $end_date = $date->addMonth($request->time);
-        }elseif($request->dmy == 'year'){
-            $end_date = $date->addYear($request->time);
-        }
-
-        echo(' ');
-        echo($end_date->format('d/m/Y'));
-
-        echo(' ');
-
-
-        $reminder_date = clone $start_date; // Cloner la date de départ pour éviter les modifications inattendues
-        $tab = array(); // Initialiser le tableau des dates
-
-        $i = 0;
-
-        echo(' ');
-        echo($reminder_date->format('d/m/Y'));
-        echo(' ');
-
-        do {
-            if ($request->freq_dmy == 'day') {
-                $reminder_date->addDays($request->freq_time);
-                $i++;
-            } elseif ($request->freq_dmy == 'month') {
-                $reminder_date->addMonths($request->freq_time);
-                $i++;
-            } elseif ($request->freq_dmy == 'year') {
-                $reminder_date->addYears($request->freq_time);
-                $i++;
-            }
-            if ($reminder_date > $end_date) {
-                break;
-            }
-            $tab[$i] = clone $reminder_date;// Cloner la date pour éviter les modifications inattendues
-        } while ($reminder_date < $end_date);
-
-        echo ('les dates sont : ');
-        foreach ($tab as $date) {
-            echo $date->format('d/m/Y') . "\n";
-        }
-
-        $project = new Project();
-        $project->name = $request->name;
-        $project->user_id = Auth::user()->id;
-        $project->email = $request->email;
-        $project->start_date = $start_date;
-        $project->end_date = $end_date;
-        $project->reminders_dates = json_encode($tab);
-        $project->warning_message = $request->warning_message;
-        $project->end_message = $request->end_message;
-        $project->save();
-
-        return redirect()->route('dashboard')->with('success', 'Project created successfully');
-
-    }
-
+         return redirect()->route('dashboard')->with('success', 'Project created successfully');
+     }
 
     public function view($id)
     {
@@ -153,17 +70,41 @@ class ProjectController extends Controller
         return redirect()->route('dashboard')->with('success', 'Project deleted successfully');
     }
 
-    public function update(Request $request)
+    public function edit(Request $request)
     {
+        $nbDays = ["day"=> 1, "month"=> 30, "year"=> 365];
+        $request->validate([
+             'name' => ['required', 'string', 'max:50'],
+             'email' => ['required', 'email', ],
+             'start_date' => ['required'],
+             'reminder_message' => ['required', ],
+             'warning_message' => ['required', ],
+             'end_message' => ['required'],
+             'freq_time' => ['required'],
+             'time' => ['required'],
+             'freq_dmy' => ['required'],
+             'dmy' => ['required'],
+         ]);
         $project = Project::where('id', $request->id)
         ->where('user_id', auth()->id())
         ->firstOrFail();
-        $project->name = $request->name;
-        $project->warning_message = $request->warning_message;
-        $project->end_message = $request->end_message;
-        $project->email = $request->email;
-        $project->end_date = myConvertDate($request->end_date) ;
-        $project->save();
+
+         $project->name = $request->name;
+         $project->user_id = Auth::user()->id;
+         $project->warning_message = $request->warning_message;
+         $project->end_message = $request->end_message;
+         $project->reminder_message = $request->reminder_message;
+         $project->email = $request->email;
+         $project->start_date = ($request->start_date) ;
+         $project->duration = ($request->time * $nbDays[$request->dmy]);
+         $project->frequency = ($request->freq_time * $nbDays[$request->freq_dmy]);
+         $project->frequency_dmy = $nbDays[$request->freq_dmy];
+         $project->duration_dmy = $nbDays[$request->dmy];
+
+         if ($project->frequency > $project->duration) {
+            return redirect()->back()->with('error', 'frequency greater than duration');
+         }
+         $project->save();
 
         return redirect()->back()->with('success', 'Project updated successfully');
     }

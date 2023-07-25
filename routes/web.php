@@ -35,7 +35,7 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     // Route::post('/test-project', [ProjectController::class, 'test'])->name('project.test');
 
     Route::get('/delete-project/{id}', [ProjectController::class, 'delete'])->name('project.delete');
-    Route::post('/update-project', [ProjectController::class, 'update'])->name('project.update');
+    Route::post('/edit-project', [ProjectController::class, 'edit'])->name('project.edit');
     Route::get('/project/{id}', [ProjectController::class, 'view'])->name('view.project');
 
     Route::get('/new-project', function () {

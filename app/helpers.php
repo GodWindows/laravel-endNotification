@@ -7,16 +7,25 @@ use Illuminate\Support\Facades\Mail;
 if (!function_exists('progress')) {
     function progress($project) : int
     {
-        $startDate = Carbon::parse($project->created_at);
-        $endDate = Carbon::parse($project->end_date);
+       try {
+        $startDate = Carbon::parse($project->start_date);
         $currentDate = Carbon::now();
 
-        $totalDuration = $startDate->diffInDays($endDate);
+        $totalDuration = $project->duration;
         $elapsedDuration = $startDate->diffInDays($currentDate);
 
         $progress = intval(($elapsedDuration / $totalDuration) * 100);
-
+        if ($progress<0) {
+            return 0;
+        }
+        if ($progress>100) {
+            return 100;
+        }
         return $progress;
+
+       } catch (\Throwable $th) {
+        return 0 ;
+       }
     }
 }
 

@@ -108,7 +108,7 @@
                                     <label
                                         class="flex justify-start items-center text-truncate rounded-lg bg-white pl-4 pr-6 py-3 shadow-sm mr-4">
                                         <div class="text-teal-600 mr-3">
-                                            <input type="radio" required name="dmy" value="day" class="form-radio focus:outline-none focus:shadow-outline" @input="updateFrequencyMax" />
+                                            <input type="radio" required name="dmy" value="day" class="form-radio focus:outline-none focus:shadow-outline"  />
                                         </div>
                                         <div class="select-none text-gray-700">Jours</div>
                                     </label>
@@ -116,7 +116,7 @@
                                     <label
                                         class="flex justify-start items-center text-truncate rounded-lg bg-white pl-4 pr-6 py-3 shadow-sm mr-4">
                                         <div class="text-teal-600 mr-3">
-                                            <input type="radio" required name="dmy" value="month" class="form-radio focus:outline-none focus:shadow-outline" @input="updateFrequencyMax"/>
+                                            <input type="radio" required name="dmy" value="month" class="form-radio focus:outline-none focus:shadow-outline" />
                                         </div>
                                         <div class="select-none text-gray-700">Mois</div>
                                     </label>
@@ -124,7 +124,7 @@
                                     <label
                                         class="flex justify-start items-center text-truncate rounded-lg bg-white pl-4 pr-6 py-3 shadow-sm">
                                         <div class="text-teal-600 mr-3">
-                                            <input type="radio" required name="dmy" value="year" class="form-radio focus:outline-none focus:shadow-outline" @input="updateFrequencyMax"/>
+                                            <input type="radio" required name="dmy" value="year" class="form-radio focus:outline-none focus:shadow-outline" />
                                         </div>
                                         <div class="select-none text-gray-700">Années</div>
                                     </label>
@@ -142,7 +142,7 @@
                                     <label
                                         class="flex justify-start items-center text-truncate rounded-lg bg-white pl-4 pr-6 py-3 shadow-sm mr-4">
                                         <div class="text-teal-600 mr-3">
-                                            <input type="radio" required name="freq_dmy" value="day" class="form-radio focus:outline-none focus:shadow-outline" @input="updateFrequencyMax"/>
+                                            <input type="radio" required name="freq_dmy" value="day" class="form-radio focus:outline-none focus:shadow-outline" />
                                         </div>
                                         <div class="select-none text-gray-700">Jours</div>
                                     </label>
@@ -150,7 +150,7 @@
                                     <label
                                         class="flex justify-start items-center text-truncate rounded-lg bg-white pl-4 pr-6 py-3 shadow-sm mr-4">
                                         <div class="text-teal-600 mr-3">
-                                            <input type="radio" required name="freq_dmy" value="month" class="form-radio focus:outline-none focus:shadow-outline" @input="updateFrequencyMax"/>
+                                            <input type="radio" required name="freq_dmy" value="month" class="form-radio focus:outline-none focus:shadow-outline" />
                                         </div>
                                         <div class="select-none text-gray-700">Mois</div>
                                     </label>
@@ -158,7 +158,7 @@
                                     <label
                                         class="flex justify-start items-center text-truncate rounded-lg bg-white pl-4 pr-6 py-3 shadow-sm">
                                         <div class="text-teal-600 mr-3">
-                                            <input type="radio" required name="freq_dmy" value="year" class="form-radio focus:outline-none focus:shadow-outline" @input="updateFrequencyMax"/>
+                                            <input type="radio" required name="freq_dmy" value="year" class="form-radio focus:outline-none focus:shadow-outline" />
                                         </div>
                                         <div class="select-none text-gray-700">Années</div>
                                     </label>
@@ -169,25 +169,38 @@
                             <div class="relative mb-3" data-te-input-wrapper-init>
                                 <textarea
                                     class="peer block min-h-[auto] w-full rounded border-0 px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none darke:text-neutral-200 darke:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                                    id="exampleFormControlTextarea1"
+                                    id="reminder_message"
+                                    rows="3"
+                                    name="reminder_message"
+                                    placeholder="Your message" required></textarea>
+                                <label
+                                    for="reminder_message"
+                                    class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none darke:text-neutral-200 darke:peer-focus:text-primary"
+                                    >Message de rappel </label
+                                >
+                            </div>
+                            <div class="relative mb-3" data-te-input-wrapper-init>
+                                <textarea
+                                    class="peer block min-h-[auto] w-full rounded border-0 px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none darke:text-neutral-200 darke:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                    id="warning_message"
                                     rows="3"
                                     name="warning_message"
                                     placeholder="Your message" required></textarea>
                                 <label
-                                    for="exampleFormControlTextarea1"
+                                    for="warning_message"
                                     class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none darke:text-neutral-200 darke:peer-focus:text-primary"
                                     >Message d'avertissement </label
                                 >
-                                </div>
-                                <div class="relative mb-3" data-te-input-wrapper-init>
+                            </div>
+                            <div class="relative mb-3" data-te-input-wrapper-init>
                                 <textarea
                                     class="peer block min-h-[auto] w-full rounded border-0 px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none darke:text-neutral-200 darke:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                                    id="exampleFormControlTextarea1"
+                                    id="end_message"
                                     rows="3"
                                     name="end_message"
                                     placeholder="Your message" required></textarea>
                                 <label
-                                    for="exampleFormControlTextarea1"
+                                    for="end_message"
                                     class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none darke:text-neutral-200 darke:peer-focus:text-primary"
                                     >Message de signalement de fin</label
                                 >

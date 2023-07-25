@@ -11,21 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('projects', function (Blueprint $table) {
-            $table->id();
-            $table->date('start_date');
-            $table->date('end_date')->nullable();
-            $table->json('reminders_dates')->nullable();
-            $table->timestamps();
+        Schema::table('projects', function (Blueprint $table) {
+            $table->integer('duration_dmy');
+            $table->integer('frequency_dmy');
         });
     }
-
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('projects');
+        Schema::table('projects', function (Blueprint $table) {
+            $table->dropColumn('duration_dmy');
+            $table->dropColumn('frequency_dmy');
+        });
     }
 };

@@ -87,7 +87,7 @@ function check_step3() {
                 page++
                 show_step(page)
             }else{
-                toast('La fréquence de rappel doit être inférieure ou égale à la durée du projet')
+                toast('La fréquence de rappel doit être inférieure à la durée du projet')
             }
         }else{
             toast('Choisissez entre jours, mois et années')
@@ -129,42 +129,4 @@ function durationIsGreaterThanFrequency() {
     }
     return duration*nbDays[dmy] > frequency*nbDays[freq_dmy]
 
-}
-
-function app() {
-    return {
-        step: 1,
-        dmy: '',
-        freq_dmy: '',
-        updateFrequencyMax() {
-            const duration = parseInt(document.getElementById('time').value);
-            let maxFrequency;
-
-
-            if (this.dmy === 'year') {
-                if (this.freq_dmy === 'day') {
-                    maxFrequency = duration * 365;
-                } else if (this.freq_dmy === 'month') {
-                    maxFrequency = duration * 12;
-                } else if (this.freq_dmy === 'year'){
-                    maxFrequency = duration;
-                }
-            } else if (this.dmy === 'month') {
-                if (this.freq_dmy === 'day') {
-                    maxFrequency = duration * 30;
-                } else {
-                    maxFrequency = duration;
-                }
-            } else {
-                maxFrequency = 0;
-            }
-
-            console.log(maxFrequency);
-
-            document.getElementById('freq_time').setAttribute('max', maxFrequency);
-        },
-        goToStep(step) {
-            this.step = step;
-        },
-    };
 }
