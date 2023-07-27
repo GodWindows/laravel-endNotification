@@ -3,6 +3,7 @@
 use Carbon\Carbon;
 use App\Models\Project;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\MessageMail;
 
 if (!function_exists('progress')) {
     function progress($project) : int
@@ -32,59 +33,76 @@ if (!function_exists('progress')) {
 if (!function_exists('endIn3Days')) {
     function endIn3Days($project)
     {
-        $endDate = Carbon::parse($project->end_date);
-        $threeDaysBeforeEndDate = $endDate->subDays(3);
-        $today = Carbon::now();
-
-        return $threeDaysBeforeEndDate->isSameDay($today);
+        $startDate = Carbon::parse($project->start_date);
+        $currentDate = Carbon::now();
+        $elapsedDuration = $startDate->diffInDays($currentDate);
+        return ($elapsedDuration +3 )== $project->duration;;
     }
 }
 
 if (!function_exists('endToday')) {
     function endToday($project)
     {
-        $endDate = Carbon::parse($project->end_date)->endOfDay();
-        $today = Carbon::now();
+        $startDate = Carbon::parse($project->start_date);
+        $currentDate = Carbon::now();
+        $elapsedDuration = $startDate->diffInDays($currentDate);
+        return $elapsedDuration == $project->duration;
+    }
+}
 
-        return $endDate->isSameDay($today);
+if (!function_exists('isRunning')) {
+    function isRunning($project)
+    {
+        $startDate = Carbon::parse($project->start_date);
+        $currentDate = Carbon::now();
+        $elapsedDuration = $startDate->diffInDays($currentDate);
+        return ($currentDate->gt($startDate)) && ($elapsedDuration <= ($project->duration));
+    }
+}
+
+if (!function_exists('isReminderdate')) {
+    function isReminderdate($project)
+    {
+        $startDate = Carbon::parse($project->start_date);
+        $currentDate = Carbon::now();
+        $elapsedDuration = $startDate->diffInDays($currentDate);
+        $reminderDayMatches = ( $elapsedDuration % $project->frequency )== 0;
+        return  $reminderDayMatches;
     }
 }
 
 if (!function_exists('manageProjects')) {
     function manageProjects()
     {
-        $admin = "sakigbe95@gmail.com";
         $projects = Project::all();
         foreach ($projects as $project) {
-            if (endIn3Days($project)) {
-                $toEmail = $project->email;
-                $subject = 'Message de l\'admin';
-                $content = $project->warning_message;
-                Mail::raw($content, function ($message) use ($toEmail, $subject) {
-                    $message->to($toEmail)->subject($subject);
-                });
-                Mail::raw($content, function ($message) use ($admin, $subject) {
-                    $message->to($admin)->subject($subject);
-                });
-            }
-            elseif (endToday($project)) {
-                $toEmail = $project->email;
-                $subject = 'Message de l\'admin';
-                $content = $project->end_message;
-                Mail::raw($content, function ($message) use ($toEmail, $subject) {
-                    $message->to($toEmail)->subject($subject);
-                });
-                Mail::raw($content, function ($message) use ($admin, $subject) {
-                    $message->to($admin)->subject($subject);
-                });
+            if (isRunning($project) && ($project->is_active==1)) {
+                if (isReminderDate($project)) {
+                    Mail::to($project->email)->send(new MessageMail(
+                        ['subject' => 'Message venant de ' . $project->user->name ,
+                         'title' => 'Vous avez reçu un message de ' . $project->user->name .'.',
+                         'content' => $project->reminder_message
+                        ]
+                    ));
+                }
+                if (endIn3Days($project)) {
+                    Mail::to($project->email)->send(new MessageMail(
+                        ['subject' => 'Message venant de ' . $project->user->name ,
+                         'title' => "Ceci est un message d'avertissement de " . $project->user->name .'.',
+                         'content' => $project->warning_message
+                        ]
+                    ));
+                }else
+                if (endToday($project)) {
+                    Mail::to($project->email)->send(new MessageMail(
+                        ['subject' => 'Message venant de ' . $project->user->name ,
+                         'title' => 'Vous avez reçu un message de ' . $project->user->name .'.',
+                         'content' => $project->end_message
+                        ]
+                    ));
+                }
             }
         }
-        $toEmail = "kanlinsougodwin@gmail.com";
-        $subject = 'Test cron job';
-        $content = ' Test cron job message content';
-        Mail::raw($content, function ($message) use ($toEmail, $subject) {
-            $message->to($toEmail)->subject($subject);
-        });
     }
 }
 if (!function_exists('myConvertDate')) {
