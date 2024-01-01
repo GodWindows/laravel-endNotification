@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
-    return redirect('http://www.ecoody.com');
+    return redirect('http://www.mywebsite.com');
 })->name('home');
 
 Route::get('/tasks/{code}', [ProjectController::class, 'tasks'])->name('tasks');
