@@ -1,5 +1,5 @@
 
-# Project Alert Web App
+# Notification Web App
 
 ## Overview
 Welcome to the Project Alert Web App! This application enables you to set up email alerts for your projects effortlessly. It's designed to keep you informed about the progress and updates of your various projects at a frequency of your choosing.
